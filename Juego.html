@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title> Canvas | Proyecto </title>
+		<script src="jquery-2.2.3.js"></script>
+        <style>
+			canvas{
+				border: 1px solid grey;
+			}
+        </style>
+	</head>
+	<body>
+        <canvas id="canv" height="500" width="1250"></canvas>
+	</body>
+    <script>
+		function sound(src, auto) {
+			this.sound = document.createElement("audio");
+			this.sound.src = src;
+			if(auto){
+				this.sound.autoplay = true;
+				this.sound.loop = true;
+			}
+			document.body.appendChild(this.sound);
+			this.play = function(){
+				this.sound.play();
+			}
+			this.stop = function(){
+				this.sound.pause();
+			}
+		}
+	    var canv = document.getElementById("canv");
+	    var ctx = canv.getContext("2d");
+	    var game = new Image();
+		var title = new Image();
+		var unicorn = new Image();
+	    game.src = "fondo.png";
+		title.src = "title.png";
+		unicorn.src = "./unicorn.png"
+		var a = 1170;
+		var b = 1170;
+		var c = 1170;
+		var d = 1170;
+		var e = 1170;
+		var f = 1170;
+		var g = 1170;
+		var h = 1170;
+		var x = 0;
+		var cont = 0;
+		var xs = [67, 97, 162, 4];
+		var ys = [4, 4, 2, 4];
+		var alt = 400;
+		var music = new sound("./music.mp3", true);
+		function uni(){
+		 	this.salto = function(countD,alt){
+				ctx.drawImage(unicorn, xs[countD], ys[countD], 22, 20, 100, alt, 50, 43);
+			};
+			this.crash= function(obs)
+			{
+			    this.width = 50;
+			    this.height = 43;
+			    this.x = 100;
+			    this.y = alt;
+				var izq = this.x;
+				var der = this.x + (this.width);
+				var arriba = this.y;
+				var abajo = this.y + (this.height);
+				var izq2 = obs.enx;
+				var der2 = obs.enx + (obs.obWidth);
+				var arriba2 = obs.eny;
+				var abajo2 = obs.eny + (obs.obHeight);
+				var crash = true;
+				if ((abajo < arriba2) || (arriba > abajo2) || (der < izq2) || (izq > der2)) {
+				    crash = false;
+				}
+				return crash;
+			}
+		}
+		function Obstacle(obWidth, obHeight, eny){
+			this.obHeight = obHeight;
+			this.obWidth = obWidth;
+			this.eny = eny;
+			this.enx=0;
+		}
+		function titleScreen(){
+			ctx.clearRect(0, 0, 1250, 500);
+			ctx.drawImage(title, 0, 0, 422, 222, 0, 0, 1250, 500);
+		}
+		function pause(){
+			ctx.font = "15px Arial";
+			ctx.fillText("Pausa", 10, 30);
+			// if($(window).keypress())
+			// 	play();
+		}
+		var pony = new uni();
+		var tube1 = new Obstacle(80, 76, 370);
+		var tube2 = new Obstacle(80, 113, 340);
+		var tube3 = new Obstacle(80, 126, 440);
+		function jump(){
+			var wow = setInterval(function(){
+				if(alt>235)
+					alt-=1;
+			},2);
+			setTimeout(function(){
+				clearInterval(wow);
+			},450);
+		}
+		function putObstacles(){
+			if(x >= 165){
+				ctx.fillStyle = "rgba(255,0,0,0.2)";
+				tube1.enx=a;
+				ctx.rect(tube1.enx, tube1.eny, tube1.obWidth, tube1.obHeight);
+				ctx.fillRect(tube1.enx, tube1.eny, tube1.obWidth, tube1.obHeight);
+				a -= 27;
+			}
+			if(x >= 325){
+				ctx.fillStyle = "rgba(255,0,0,0.2)";
+				tube2.enx=b;
+				ctx.rect(tube2.enx, tube2.eny, tube2.obWidth, tube2.obHeight);
+				ctx.fillRect(tube2.enx, tube2.eny, tube2.obWidth, tube2.obHeight);
+				b -= 27;
+			}
+			if(x >= 455){
+				ctx.fillStyle = "rgba(255,0,0,0.2)";
+				tube2.enx=c;
+				ctx.rect(tube2.enx, tube2.eny, tube2.obWidth, tube2.obHeight);
+				ctx.fillRect(tube2.enx, tube2.eny, tube2.obWidth, tube2.obHeight);
+				c -= 27;
+			}
+			if(x >= 820){
+				ctx.fillStyle = "rgba(255,0,0,0.2)";
+				tube3.enx=d;
+				ctx.rect(tube3.enx, tube3.eny, tube3.obWidth, tube3.obHeight);
+				ctx.fillRect(tube3.enx, tube3.eny, tube3.obWidth, tube3.obHeight);
+				d -= 27;
+			}
+			if(x >= 1090){
+				ctx.fillStyle = "rgba(255,0,0,0.2)";
+				tube3.enx=e;
+				ctx.rect(tube3.enx, tube3.eny, tube3.obWidth, tube3.obHeight);
+				ctx.fillRect(tube3.enx, tube3.eny, tube3.obWidth, tube3.obHeight);
+				e -= 27;
+			}
+			if(x >= 1685){
+				ctx.fillStyle = "rgba(255,0,0,0.2)";
+				tube2.enx=f;
+				ctx.rect(tube2.enx, tube2.eny, tube2.obWidth, tube2.obHeight);
+				ctx.fillRect(tube2.enx, tube2.eny, tube2.obWidth, tube2.obHeight);
+				f -= 27;
+			}
+			if(x >= 1850){
+				ctx.fillStyle = "rgba(255,0,0,0.2)";
+				ctx.rect(g, tube2.eny, tube2.obWidth, tube2.obHeight);
+				ctx.fillRect(g, tube2.eny, tube2.obWidth, tube2.obHeight);
+				g -= 27;
+			}
+			if(x >= 2170){
+				ctx.fillStyle = "rgba(255,0,0,0.2)";
+				ctx.rect(h, tube3.eny, tube3.obWidth, tube3.obHeight);
+				ctx.fillRect(h, tube3.eny, tube3.obWidth, tube3.obHeight);
+				h -= 27;
+			}
+		}
+
+		function play(){
+			var mainInterval = setInterval(function(){
+				if(pony.crash(tube1))
+					clearInterval(mainInterval);
+				else if(pony.crash(tube2))
+					clearInterval(mainInterval);
+				else if(pony.crash(tube3))
+					clearInterval(mainInterval);
+					 else {
+					if(x <= 2630){
+						x += 10;
+						ctx.clearRect(0, 0, 1250, 500);
+						ctx.drawImage(game, x, 0, 440, 225, 0, 0, 1250, 500);
+						if(alt<399)
+							alt += 19;
+						countD = cont % 4;
+						pony.salto(countD,alt);
+						cont++;
+						$(window).keydown(function(event){
+							if(event.keyCode == 38 || event.keyCode == 32)
+								jump();
+							if(event.keyCode == 13){
+								clearInterval(mainInterval);
+								pause();
+							}
+						});
+						putObstacles();
+					}
+					else
+					{
+						a = 1170;
+						b = 1170;
+						c = 1170;
+						d = 1170;
+						e = 1170;
+						f = 1170;
+						g = 1170;
+						h = 1170;
+						x = 0;
+					}
+					// 	putObstacles();
+					// console.log(x);
+				}
+
+			}, 100);
+		}
+		window.onload = function(){
+			ctx.drawImage(game, 0, 0, 440, 225, 0, 0, 1250, 500);
+			titleScreen();
+			music.play;
+			$(window).click(function(){
+					play();
+			});
+		}
+    </script>
+</html>
